@@ -39,10 +39,21 @@ def update_timer():
     if timer_seconds >= 0:
         mins, secs = divmod(timer_seconds, 60)
         time_label.configure(text=f"{mins:02d}:{secs:02d}")
+        
+        # 残り時間で色を変える
+        if timer_seconds <= 10:  # 残り10秒以下
+            time_label.configure(text_color="red")
+        elif timer_seconds <= 60:
+            time_label.configure(text_color="orange")
+        else:
+            time_label.configure(text_color="white")
+            
         timer_seconds -= 1
+
         app.after(1000, update_timer)
     else:
         time_label.configure(text="00:00")
+        time_label.configure(text_color="white")
         beep_repeated(3)
         # タイマー終了で終了ボタン非表示にして開始ボタンを戻す
         end_button.grid_remove()
