@@ -4,10 +4,41 @@ import threading
 
 
 def create_image():
-    # 簡単なアイコン生成
-    image = Image.new("RGB", (64, 64), "white")
+    size = 64
+
+    image = Image.new("RGB", (size, size), "white")
     draw = ImageDraw.Draw(image)
-    draw.rectangle((16, 16, 48, 48), fill="black")
+
+    # 時計の外枠
+    draw.ellipse(
+        (8, 8, 56, 56),
+        outline="black",
+        width=4
+    )
+
+    # 中心点
+    center = (32, 32)
+
+    # 長針（分）
+    draw.line(
+        (center[0], center[1], center[0], 16),
+        fill="black",
+        width=4
+    )
+
+    # 短針（時）
+    draw.line(
+        (center[0], center[1], 44, 32),
+        fill="black",
+        width=4
+    )
+
+    # 中心
+    draw.ellipse(
+        (29, 29, 35, 35),
+        fill="black"
+    )
+
     return image
 
 
