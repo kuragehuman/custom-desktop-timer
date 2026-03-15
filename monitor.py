@@ -28,3 +28,34 @@ def get_work_area():
     user32.GetMonitorInfoW(monitor, ctypes.byref(info))
 
     return info.rcWork
+
+def get_all_work_areas():
+
+    monitors = []
+
+    def callback(hMonitor, hdcMonitor, lprcMonitor, dwData):
+
+        info = MONITORINFO()
+        info.cbSize = ctypes.sizeof(info)
+        user32.GetMonitorInfoW(hMonitor, ctypes.byref(info))
+
+        monitors.append(info.rcWork)
+
+        return True
+
+    MONITORENUMPROC = ctypes.WINFUNCTYPE(
+        wintypes.BOOL,
+        wintypes.HMONITOR,
+        wintypes.HDC,
+        wintypes.LPRECT,
+        wintypes.LPARAM
+    )
+
+    user32.EnumDisplayMonitors(
+        0,
+        0,
+        MONITORENUMPROC(callback),
+        0
+    )
+
+    return monitors
