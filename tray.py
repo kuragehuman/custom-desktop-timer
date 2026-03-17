@@ -65,7 +65,7 @@ class TrayIcon:
             create_image(),
             "Desktop Timer",
             menu=pystray.Menu(
-                pystray.MenuItem("表示", self.show_window),
+                pystray.MenuItem("表示/非表示", self.toggle_window),
                 pystray.Menu.SEPARATOR,
                 pystray.MenuItem("モニター", pystray.Menu(*monitor_items)),
                 pystray.Menu.SEPARATOR,
@@ -105,3 +105,12 @@ class TrayIcon:
             self.move_to_monitor(index)
 
         return handler
+    
+    def toggle_window(self, icon, item=None):
+        def toggle():
+            if self.app.state() == "normal":  # 表示中
+                self.app.withdraw()
+            else:  # 非表示中
+                self.app.deiconify()
+                self.app.lift()
+        self.app.after(0, toggle)
