@@ -7,6 +7,7 @@ import ctypes
 WIN_WIDTH = 300
 WIN_HEIGHT = 50
 BUTTONS = [5, 10, 15, 20, 25]
+TRANSPARENT_COLOR = "#00ff00"  # 透過色・背景色
 
 class TimerApp:
 
@@ -38,6 +39,9 @@ class TimerApp:
         self.app.protocol("WM_DELETE_WINDOW", self.hide_window)
 
         self.timer_job = None
+
+        self.app.configure(fg_color=TRANSPARENT_COLOR)
+        self.app.wm_attributes("-transparentcolor", TRANSPARENT_COLOR)
 
         self.app.mainloop()
 
@@ -81,6 +85,9 @@ class TimerApp:
                 text=f"{m}:00",
                 command=lambda m=m: self.start_timer(m),
                 font=("Arial", 15),
+                border_width=2,
+                border_color="#000000",
+                corner_radius=0,
             )
 
             btn.grid(row=0, column=i, padx=1, sticky="nswe")
@@ -94,6 +101,9 @@ class TimerApp:
             command=self.stop_timer,
             text_color="black",
             font=("Arial", 20),
+            border_width=2,
+            border_color="#000000",
+            corner_radius=0,
         )
 
         self.end_button.grid_remove()
